@@ -37,9 +37,6 @@ const mergeChunks = async (fileName: string, totalChunks: number) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// statically serve /uploads from the server
-app.use('/uploads', express.static(UPLOAD_DIR));
-
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.post('/api/upload-single', upload.single('file'), async (req, res) => {
     if (!req.file) {
