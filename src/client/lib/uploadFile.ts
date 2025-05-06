@@ -8,9 +8,23 @@ export async function uploadFile(file: File): Promise<string> {
     });
 
     if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || 'Upload failed');
+        let errorMessage = 'Upload failed';
+        try {
+            const errorData: unknown = await res.json();
+            if (
+                typeof errorData === 'object' &&
+                errorData !== null &&
+                'message' in errorData &&
+                typeof (errorData as { message: unknown }).message === 'string'
+            ) {
+                errorMessage = (errorData as { message: string }).message;
+            }
+        } catch {
+            // fallback to default error message
+        }
+
+        throw new Error(errorMessage);
     }
 
-    return file.name; // Assuming you want to return the filename for now
+    return file.name;
 }

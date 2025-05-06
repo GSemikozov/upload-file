@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+
 import { uploadFile } from '../../lib/uploadFile';
 
 interface UseFileUploadProps {
@@ -11,9 +12,13 @@ export function useFileUpload({ onUpload }: UseFileUploadProps) {
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file) return;
+
+        if (!file) {
+            return;
+        }
 
         setIsUploading(true);
+
         try {
             const uploadedUrl = await uploadFile(file);
             onUpload(uploadedUrl);

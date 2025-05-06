@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import FileUpload from '../components/FileUpload/FileUpload';
 
 type UploadedFile = {
@@ -6,13 +7,34 @@ type UploadedFile = {
     size: number;
 };
 
+type FilesResponse = {
+    files: UploadedFile[];
+};
+
 function UploadDemoPage() {
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
     const fetchUploadedFiles = async () => {
-        const res = await fetch('/api/files');
-        const data = await res.json();
-        setUploadedFiles(data.files);
+        try {
+            const res = await fetch('/api/files');
+            if (!res.ok) {
+                throw new Error('Failed to fetch files');
+            }
+
+            const data: unknown = await res.json();
+            if (
+                typeof data === 'object' &&
+                data !== null &&
+                'files' in data &&
+                Array.isArray((data as FilesResponse).files)
+            ) {
+                setUploadedFiles((data as FilesResponse).files);
+            } else {
+                throw new Error('Unexpected response format');
+            }
+        } catch (error) {
+            console.error('Error fetching files:', error);
+        }
     };
 
     const handleUpload = async () => {
@@ -20,7 +42,9 @@ function UploadDemoPage() {
     };
 
     useEffect(() => {
-        fetchUploadedFiles();
+        fetchUploadedFiles().catch((error) => {
+            console.error('Error in useEffect:', error);
+        });
     }, []);
 
     return (

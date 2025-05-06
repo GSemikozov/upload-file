@@ -1,5 +1,5 @@
+import { type FileUploadProps } from './FileUpload.types';
 import { useFileUpload } from './useFileUpload';
-import { FileUploadProps } from './FileUpload.types';
 
 function FileUpload({ onUpload, label = 'Upload a file' }: FileUploadProps) {
     const { inputRef, handleChange, isUploading } = useFileUpload({ onUpload });

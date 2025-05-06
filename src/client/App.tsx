@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+
 import UploadDemoPage from './pages/UploadDemoPage';
 
 export const App = (): ReactElement => {
