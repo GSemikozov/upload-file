@@ -28,10 +28,10 @@ export const FileUploaderDropzone = forwardRef<HTMLInputElement, FileUploaderDro
                     'flex flex-col items-center justify-center border-2 border-dashed rounded-lg px-6 py-10 text-center transition-colors',
                     disabled
                         ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400 hover:bg-blue-50 cursor-pointer'
+                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400 hover:bg-blue-50 cursor-pointer',
+                    'focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2'
                 )}
             >
-                {/* Icon container */}
                 <div className="mb-2 pointer-events-none">
                     <UploadCloud className={cn('w-8 h-8', disabled ? 'text-gray-400' : 'text-gray-500')} />
                 </div>
