@@ -1,5 +1,5 @@
 import { createWriteStream, existsSync, mkdirSync, unlinkSync } from 'node:fs';
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { unlink, readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import stream from 'node:stream';
 import { promisify } from 'node:util';
@@ -36,6 +36,9 @@ const mergeChunks = async (fileName: string, totalChunks: number) => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// statically serve /uploads from the server
+app.use('/uploads', express.static(UPLOAD_DIR));
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.post('/api/upload-single', upload.single('file'), async (req, res) => {
@@ -101,7 +104,7 @@ app.post(
 app.get('/api/files', async (_req, res) => {
     try {
         const fileNames = await readdir(UPLOAD_DIR);
-        const files: { name: string; size: number }[] = [];
+        const files: { name: string; size: number; createdAt: string }[] = [];
         for (const fileName of fileNames) {
             if (fileName === '.gitkeep') {
                 continue;
@@ -111,6 +114,7 @@ app.get('/api/files', async (_req, res) => {
             files.push({
                 name: fileName,
                 size: file.size,
+                createdAt: file.birthtime.toISOString(),
             });
         }
 
@@ -119,4 +123,17 @@ app.get('/api/files', async (_req, res) => {
         const message = error instanceof Error ? error.message : 'An error occurred';
         return res.status(500).json({ message });
     }
+});
+
+app.delete('/api/files/:name', (req, res) => {
+    const fileName = req.params.name;
+    const filePath = join(UPLOAD_DIR, fileName);
+
+    unlink(filePath)
+        .then(() => {
+            res.status(200).json({ message: 'File deleted' });
+        })
+        .catch(() => {
+            res.status(404).json({ message: 'File not found' });
+        });
 });

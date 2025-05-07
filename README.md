@@ -50,3 +50,11 @@ The boilerplate provides Tailwind CSS by default. If you want to use something e
 ## Testing
 
 Vitest is provided by default for testing, however you are free to use whatever you like and are familiar with.
+
+## TODO
+
+1. Add toasts for server responces while uploading files
+2. Extract logic into custom hook (encapsulate all of this: selected file validation, upload loop, error collection, refreshing from server, files state management)
+3. Add chunked uploads (with progress and/or form integration)
+4. Handle multiple files uploading
+5. Add tests
