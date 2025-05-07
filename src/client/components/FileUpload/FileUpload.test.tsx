@@ -4,8 +4,8 @@ import '@testing-library/jest-dom';
 import FileUpload from './FileUpload';
 
 test('renders file input and handles upload', () => {
-    const mockUpload = jest.fn();
-    render(<FileUpload onUpload={mockUpload} />);
+    const mockSubmit = jest.fn();
+    render(<FileUpload onSubmit={mockSubmit} />);
 
     const input = screen.getByLabelText(/upload a file/i);
     expect(input).toBeInTheDocument();
@@ -13,5 +13,5 @@ test('renders file input and handles upload', () => {
     const file = new File(['test'], 'test.txt', { type: 'text/plain' });
     fireEvent.change(input, { target: { files: [file] } });
 
-    // Can't fully test uploadFile without mocking the fetch or uploadFile fn
+    // todo: can't fully test uploadFile without mocking the fetch or uploadFile fn
 });

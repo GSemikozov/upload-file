@@ -8,7 +8,7 @@ export async function uploadFile(file: File): Promise<string> {
     });
 
     if (!res.ok) {
-        let errorMessage = 'Upload failed';
+        let message = 'Upload failed';
         try {
             const errorData: unknown = await res.json();
             if (
@@ -17,13 +17,15 @@ export async function uploadFile(file: File): Promise<string> {
                 'message' in errorData &&
                 typeof (errorData as { message: unknown }).message === 'string'
             ) {
-                errorMessage = (errorData as { message: string }).message;
+                message = (errorData as { message: string }).message;
             }
         } catch {
-            // fallback to default error message
+            if (res.status === 413) {
+                message = 'File too large.';
+            }
         }
 
-        throw new Error(errorMessage);
+        throw new Error(message);
     }
 
     return file.name;
