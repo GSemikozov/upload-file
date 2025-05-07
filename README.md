@@ -50,3 +50,13 @@ The boilerplate provides Tailwind CSS by default. If you want to use something e
 ## Testing
 
 Vitest is provided by default for testing, however you are free to use whatever you like and are familiar with.
+
+## TODO
+
+0. Keep api on component level is not a good idea. Fine for now, but in future it would be great to have a separate adapter for successful response/adapter for errors, then solution would be more flexible
+1. Add toasts for server responces while uploading files
+2. Extract logic into custom hook (encapsulate all of this: selected file validation, upload loop, error collection, refreshing from server, files state management)
+3. Add chunked uploads (with progress and/or form integration)
+4. Handle multiple files uploading
+5. Add tests
+6. Improve accessibility
