@@ -58,3 +58,4 @@ Vitest is provided by default for testing, however you are free to use whatever 
 3. Add chunked uploads (with progress and/or form integration)
 4. Handle multiple files uploading
 5. Add tests
+6. Improve accessibility
